@@ -41,6 +41,15 @@ function parse_product($all_products_links_array){
   foreach ($all_products_links_array as $key => $value) {
     $request_all_product = requests($value);
     $output_all_product = phpQuery::newDocument($request_all_product);
+
+
+    //створюємо посилання для локалізованої сторінок
+    echo $value.'</br>';
+    $local_url = str_replace("/uk/" , "/ru/", $value);
+   echo $local_url.'</br>';
+    
+
+
     $product_name = $output_all_product->find('.product-title h1');
     $product_name = $product_name->text();  
     $product_name = mb_ucfirst($product_name);
