@@ -67,13 +67,21 @@ function parse_product($all_products_links_array){
     $product_price = round($product_price);
     $product_picture = $output_all_product->find('.MagicToolboxContainer img');
 
+
+    $request_all_product_ru = requests($local_url);
+    $output_all_product = phpQuery::newDocument($request_all_product_ru);
+
+
+
+
     $arrayForCheck = $product_picture->stack();
     if(count($arrayForCheck)>0) {
       echo "TRUE</br>";
       foreach ($product_picture as $key=>$link) {
         $pqlink = pq($link);
         $product_picture_arr[$key] = $pqlink->attr("src");  
-  }
+
+        }
   $separator = ';';
    $product_picture_str = implode($product_picture_arr, $separator);
         $product_picture_str = str_replace('small_default', 'large_default', $product_picture_str);
@@ -83,6 +91,16 @@ else {
   $product_picture_str= 'NO_IMAGE';
     continue;
 }
+
+$request_all_product_ru = requests($local_url);
+$output_all_product_ru = phpQuery::newDocument($request_all_product_ru);
+//Назва по росийски
+
+$product_name_ru = $output_all_product_ru->find('.product-title h1');
+$product_name_ru = $product_name_ru->text();  
+echo $product_name_ru.'<br>';
+echo $product_name.'<br>';
+
 
 $mysqli = data_connect();  //функція підключення до бази
 $sql = "INSERT INTO products (id, name, sku, price, picture)
